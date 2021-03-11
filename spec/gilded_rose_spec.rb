@@ -26,6 +26,11 @@ describe GildedRose do
       gildedrose.update_quality()
       expect(items[0].quality).to eq 9
     end
+
+    it 'quality can never go below 0' do
+      11.times { gildedrose.update_quality() }
+      expect(items[0].quality).to eq 0
+    end
   end
 
 end
