@@ -3,7 +3,8 @@ require 'gilded_rose'
 describe GildedRose do
   # let(:dish) { double(:dish) }
   let(:item) { Item.new('foo', 10, 10) }
-  let(:items) { [item] }
+  let(:item2) { Item.new('bar', 1, 10)}
+  let(:items) { [item, item2] }
   subject(:gildedrose) { described_class.new(items) }
 
   describe "#update_quality" do
@@ -30,6 +31,11 @@ describe GildedRose do
     it 'quality can never go below 0' do
       11.times { gildedrose.update_quality() }
       expect(items[0].quality).to eq 0
+    end
+
+    it 'quality degrades twice as fast once sell-by date has passed' do
+      3.times { gildedrose.update_quality() }
+      expect(items[1].quality).to eq 5
     end
   end
 
