@@ -4,7 +4,8 @@ describe GildedRose do
   # let(:dish) { double(:dish) }
   let(:item) { Item.new('foo', 10, 10) }
   let(:item2) { Item.new('bar', 1, 10)}
-  let(:items) { [item, item2] }
+  let(:item3) { Item.new('Aged Brie', 2, 0)}
+  let(:items) { [item, item2, item3] }
   subject(:gildedrose) { described_class.new(items) }
 
   describe "#update_quality" do
@@ -36,6 +37,19 @@ describe GildedRose do
     it 'quality degrades twice as fast once sell-by date has passed' do
       3.times { gildedrose.update_quality() }
       expect(items[1].quality).to eq 5
+    end
+
+    it 'the quality of an item never exceeds 50' do
+      27.times { gildedrose.update_quality() }
+      expect(items[2].quality).to eq 50
+    end
+  end
+
+  describe 'Exceptional behaviour' do
+
+    it 'the quality of "Aged Brie" increases as it gets older' do
+      2.times { gildedrose.update_quality() }
+      expect(items[2].quality).to eq 2
     end
   end
 
