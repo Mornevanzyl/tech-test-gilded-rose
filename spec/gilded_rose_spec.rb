@@ -5,7 +5,8 @@ describe GildedRose do
   let(:item) { Item.new('foo', 10, 10) }
   let(:item2) { Item.new('bar', 1, 10)}
   let(:item3) { Item.new('Aged Brie', 2, 0)}
-  let(:items) { [item, item2, item3] }
+  let(:item4) { Item.new('Sulfuras, Hand of Ragnaros', 2, 0)}
+  let(:items) { [item, item2, item3, item4] }
   subject(:gildedrose) { described_class.new(items) }
 
   describe "#update_quality" do
@@ -50,6 +51,16 @@ describe GildedRose do
     it 'the quality of "Aged Brie" increases as it gets older' do
       2.times { gildedrose.update_quality() }
       expect(items[2].quality).to eq 2
+    end
+    
+    it 'Sulfuras, Hand of Ragnaros never has to be sold' do
+      gildedrose.update_quality()
+      expect(items[3].sell_in).to eq 2
+    end
+    
+    it 'Sulfuras, Hand of Ragnaros never decreases in quality' do
+      gildedrose.update_quality()
+      expect(items[3].quality).to eq 0
     end
   end
 
